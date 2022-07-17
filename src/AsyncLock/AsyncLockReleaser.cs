@@ -18,7 +18,7 @@ public class AsyncLockReleaser : IDisposable
         _type = type;
     }
 
-    internal AsyncLockType? Type => _type;
+    internal AsyncLockType Type => _type;
 
     internal AsyncLock AsyncLock => _asyncLock;
 

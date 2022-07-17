@@ -15,7 +15,6 @@ public class AsyncLock
     }
 
     internal AsyncLock(object syncObject)
-        : this()
     {
         _syncObj = syncObject;
     }
@@ -120,7 +119,7 @@ public class AsyncLock
         }
     }
 
-    internal void Release(AsyncLockType type, bool skipWaitingWriters = false, bool sendReleasedEvent = true)
+    internal void Release(AsyncLockType type, bool sendReleasedEvent = true)
     {
         lock (_syncObj)
         {
@@ -128,7 +127,7 @@ public class AsyncLock
             {
                 if (type == AsyncLockType.Write)
                 {
-                    WriterRelease(skipWaitingWriters);
+                    WriterRelease();
                 }
                 else
                 {
@@ -156,15 +155,10 @@ public class AsyncLock
         }
     }
 
-    private void WriterRelease(bool skipWaitingWriters)
+    private void WriterRelease()
     {
-        _isWriterRunning = false;
-
         //start next writer lock?
-        if (skipWaitingWriters == false)
-        {
-            StartNextWaitingWriter();
-        }
+        StartNextWaitingWriter();
 
         //no running writer lock?
         if (_isWriterRunning == false)

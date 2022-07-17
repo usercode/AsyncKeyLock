@@ -137,7 +137,7 @@ public class AsyncLockTest
     {
         AsyncLock lockEntity = new AsyncLock();
 
-        CancellationTokenSource source = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+        using CancellationTokenSource source = new CancellationTokenSource(TimeSpan.FromSeconds(1));
 
         using var w1 = await lockEntity.WriterLockAsync();
 
