@@ -14,7 +14,7 @@ var d1 = await asyncLock.ReaderLockAsync("123");
 d1.Dispose();
 
 //set timeout
-CancellationTokenSource cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+using CancellationTokenSource cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
 //acquire writer lock
 using var d2 = await asyncLock.WriterLockAsync("123", cancellationToken.Token);
