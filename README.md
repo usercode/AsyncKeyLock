@@ -5,6 +5,10 @@
 ## Sample
 
 ```csharp
+//async lock
+AsyncLock asyncLock = new AsyncLock();
+
+//async lock with key
 AsyncLock<string> asyncLock = new AsyncLock<string>();
 
 //acquire reader lock
