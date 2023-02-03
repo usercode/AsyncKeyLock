@@ -17,12 +17,12 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build with dotnet
-      run: dotnet build --configuration Release "./src/AsyncLock.sln"
+      run: dotnet build --configuration Release "./src/AsyncKeyLock.sln"
     - name: Run unit tests
       run: dotnet test "./src/AsyncLock.sln"
     - name: Create the package
-      run: dotnet pack --configuration Release "./src/AsyncLock.sln"
-    - name: Publish "AsyncLock" to nuget
-      run: dotnet nuget push "./src/AsyncLock/bin/Release/*.nupkg" -s "https://api.nuget.org/v3/index.json" -k ${{secrets.NUGET_API_KEY}}
+      run: dotnet pack --configuration Release "./src/AsyncKeyLock.sln"
+    - name: Publish "AsyncKeyLock" to nuget
+      run: dotnet nuget push "./src/AsyncKeyLock/bin/Release/*.nupkg" -s "https://api.nuget.org/v3/index.json" -k ${{secrets.NUGET_API_KEY}}
   
    
