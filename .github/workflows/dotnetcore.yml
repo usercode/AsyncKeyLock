@@ -19,7 +19,7 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release "./src/AsyncKeyLock.sln"
     - name: Run unit tests
-      run: dotnet test "./src/AsyncLock.sln"
+      run: dotnet test "./src/AsyncKeyLock.sln"
     - name: Create the package
       run: dotnet pack --configuration Release "./src/AsyncKeyLock.sln"
     - name: Publish "AsyncKeyLock" to nuget
