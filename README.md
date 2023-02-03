@@ -5,7 +5,7 @@
 
 ## Async Key-based ReaderWriterLock with cancellation support
 
-## Sample
+## How to use it
 
 ```csharp
 //async lock
