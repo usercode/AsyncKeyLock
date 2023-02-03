@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>AsyncLock.Tests</_Parameter1>
+      <_Parameter1>AsyncKeyLock.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 
