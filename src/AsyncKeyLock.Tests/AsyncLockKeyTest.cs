@@ -4,7 +4,7 @@
 
 using Xunit;
 
-namespace AsyncLock.Tests;
+namespace AsyncKeyLock.Tests;
 
 public class AsyncLockKeyTest
 {

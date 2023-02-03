@@ -2,7 +2,7 @@
 // https://github.com/usercode/AsyncLock
 // MIT License
 
-namespace AsyncLock;
+namespace AsyncKeyLock;
 
 /// <summary>
 /// AsyncLockType
