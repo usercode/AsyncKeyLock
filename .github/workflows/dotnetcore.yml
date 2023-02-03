@@ -6,7 +6,7 @@ on:
       - published
 
 jobs:
-  dragonfly:
+  start:
 
     runs-on: ubuntu-latest
 
