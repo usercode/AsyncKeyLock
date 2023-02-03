@@ -85,7 +85,7 @@ public class AsyncLock
             if (_isWriterRunning == false && _waitingWriters.Count == 0)
             {
                 _readersRunning++;
-                return Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Read));
+                return Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Read, true));
             }
             else
             {
@@ -108,7 +108,7 @@ public class AsyncLock
             if (_isWriterRunning == false && _readersRunning == 0)
             {
                 _isWriterRunning = true;
-                return Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Write));
+                return Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Write, true));
             }
             else
             {
@@ -167,7 +167,7 @@ public class AsyncLock
             {
                 var taskSource = _waitingReaders.Dequeue();
 
-                bool result = taskSource.TrySetResult(new AsyncLockReleaser(this, AsyncLockType.Read));
+                bool result = taskSource.TrySetResult(new AsyncLockReleaser(this, AsyncLockType.Read, false));
 
                 if (result)
                 {
@@ -183,7 +183,7 @@ public class AsyncLock
         {
             var taskSource = _waitingWriters.Dequeue();
 
-            bool result = taskSource.TrySetResult(new AsyncLockReleaser(this, AsyncLockType.Write));
+            bool result = taskSource.TrySetResult(new AsyncLockReleaser(this, AsyncLockType.Write, false));
 
             if (result == true)
             {

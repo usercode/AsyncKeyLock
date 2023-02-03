@@ -19,6 +19,10 @@ public class AsyncLockTest
         using var r3 = await lockEntity.ReaderLockAsync();
 
         Assert.Equal(3, lockEntity.CountRunningReaders);
+
+        Assert.True(r1.IsAcquiredImmediately);
+        Assert.True(r2.IsAcquiredImmediately);
+        Assert.True(r3.IsAcquiredImmediately);
     }
 
     [Fact]

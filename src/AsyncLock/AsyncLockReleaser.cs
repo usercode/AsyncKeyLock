@@ -11,16 +11,24 @@ public class AsyncLockReleaser : IDisposable
 {
     private readonly AsyncLock _asyncLock;
     private readonly AsyncLockType _type;
+    private readonly bool _lockAcquiredImmediately;
 
-    internal AsyncLockReleaser(AsyncLock asyncLock, AsyncLockType type)
+    internal AsyncLockReleaser(AsyncLock asyncLock, AsyncLockType type, bool lockAcquiredImmediately)
     {
         _asyncLock = asyncLock;
         _type = type;
+        _lockAcquiredImmediately = lockAcquiredImmediately;
     }
 
-    internal AsyncLockType Type => _type;
+    /// <summary>
+    /// Type
+    /// </summary>
+    public AsyncLockType Type => _type;
 
-    internal AsyncLock AsyncLock => _asyncLock;
+    /// <summary>
+    /// IsAcquiredImmediately
+    /// </summary>
+    public bool IsAcquiredImmediately => _lockAcquiredImmediately;
 
     private bool _disposed;
 
