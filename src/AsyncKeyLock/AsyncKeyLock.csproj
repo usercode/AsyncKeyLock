@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <Authors>usercode</Authors>
     <Version>1.0.0</Version>
-    <PackageProjectUrl>https://github.com/usercode/AsyncLock</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/usercode/AsyncKeyLock</PackageProjectUrl>
     <Description>Async Key-based Reader Writer Lock</Description>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageIcon>logo.png</PackageIcon>
