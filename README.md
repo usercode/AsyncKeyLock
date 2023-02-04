@@ -46,7 +46,7 @@ using var d2 = await asyncLock.WriterLockAsync("123", cts.Token);
 |         Nito |         10000 |  1,212.091 μs |  23.2923 μs |  31.0945 μs |   2.62 |    0.07 |  679.6875 |    3125 KB |        3.08 |
 |     NeoSmart |         10000 | 86,948.942 μs | 289.1808 μs | 241.4791 μs | 187.08 |    1.14 | 2000.0000 | 9581.38 KB |        9.43 |
 
-###' Create and release key locks
+### Create and release key locks
 
 |         Method | NumberOfLocks |        Mean |     Error |    StdDev | Ratio | RatioSD |     Gen0 |  Allocated | Alloc Ratio |
 |--------------- |-------------- |------------:|----------:|----------:|------:|--------:|---------:|-----------:|------------:|
