@@ -10,7 +10,14 @@ namespace AsyncKeyLock;
 public sealed class AsyncLock<TKey>
     where TKey : notnull
 {
+    public AsyncLock(int maxPoolSize = 64)
+    {
+        MaxPoolSize = maxPoolSize;
+    }
+
     private readonly IDictionary<TKey, AsyncLock> _locks = new Dictionary<TKey, AsyncLock>();
+    private readonly IList<AsyncLock> _pool = new List<AsyncLock>();
+    private readonly int MaxPoolSize;
 
     /// <summary>
     /// GetAsyncLock
@@ -21,17 +28,34 @@ public sealed class AsyncLock<TKey>
     {
         if (_locks.TryGetValue(key, out AsyncLock? asyncLock) == false)
         {
-            asyncLock = new AsyncLock(_locks);
-            asyncLock.Released += x =>
+            //is idle AsyncLock available
+            if (_pool.Count > 0)
             {
-                lock (_locks)
+                int lastPos = _pool.Count - 1;
+
+                asyncLock = _pool[lastPos];
+
+                _pool.RemoveAt(lastPos);
+            }
+            else
+            {
+                //create new AsyncLock
+                asyncLock = new AsyncLock(_locks);
+                asyncLock.Released += x =>
                 {
+                    //is AsyncLock idle
                     if (x.State == AsyncLockState.Idle)
                     {
                         _locks.Remove(key);
+
+                        //add idle AsynLock to pool
+                        if (_pool.Count < MaxPoolSize)
+                        {
+                            _pool.Add(x);
+                        }
                     }
-                }
-            };
+                };
+            }
 
             _locks.Add(key, asyncLock);
         }
