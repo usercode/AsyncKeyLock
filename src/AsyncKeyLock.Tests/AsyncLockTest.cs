@@ -148,7 +148,6 @@ public class AsyncLockTest
         await Assert.ThrowsAsync<TaskCanceledException>(async () =>
         {
             var w2 = await lockEntity.WriterLockAsync(source.Token);
-
         });
     }
 
