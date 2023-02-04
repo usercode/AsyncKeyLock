@@ -7,7 +7,7 @@ namespace AsyncKeyLock;
 /// <summary>
 /// AsyncLockReleaser
 /// </summary>
-public class AsyncLockReleaser : IDisposable
+public sealed class AsyncLockReleaser : IDisposable
 {
     private readonly AsyncLock _asyncLock;
     private readonly AsyncLockType _type;

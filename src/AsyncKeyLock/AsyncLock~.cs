@@ -7,7 +7,7 @@ namespace AsyncKeyLock;
 /// <summary>
 /// AsyncLock
 /// </summary>
-public class AsyncLock<TKey>
+public sealed class AsyncLock<TKey>
     where TKey : notnull
 {
     private readonly IDictionary<TKey, AsyncLock> _locks = new Dictionary<TKey, AsyncLock>();

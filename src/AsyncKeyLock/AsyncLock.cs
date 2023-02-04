@@ -7,7 +7,7 @@ namespace AsyncKeyLock;
 /// <summary>
 /// AsyncLock
 /// </summary>
-public class AsyncLock
+public sealed class AsyncLock
 {
     public AsyncLock()
     {
