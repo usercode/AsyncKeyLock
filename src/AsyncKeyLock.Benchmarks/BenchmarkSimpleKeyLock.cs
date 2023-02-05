@@ -1,5 +1,4 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
 
 namespace AsyncKeyLock.Benchmarks;
 
@@ -10,7 +9,10 @@ public class BenchmarkSimpleKeyLock
     public void GlobalSetup()
     {
         _AsyncKeyLock = new AsyncLock<string>();
-        _AsyncKeyedLock = new AsyncKeyedLock.AsyncKeyedLocker<string>();
+        _AsyncKeyedLock = new AsyncKeyedLock.AsyncKeyedLocker<string>(o =>
+        {
+            o.PoolSize = NumberOfLocks;
+        });
         _ImageSharpWebLock = new SixLabors.ImageSharp.Web.Synchronization.AsyncKeyLock<string>();
     }
 
