@@ -1,7 +1,7 @@
 # AsyncKeyLock
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![NuGet](https://img.shields.io/nuget/v/AsyncKeyLock.Core.svg?style=flat-square)](https://www.nuget.org/packages/AsyncKeyLock/)
+[![NuGet](https://img.shields.io/nuget/v/AsyncKeyLock.svg?style=flat-square)](https://www.nuget.org/packages/AsyncKeyLock)
 
 ## Async Key-based Reader Writer Lock with Cancellation Support
 
