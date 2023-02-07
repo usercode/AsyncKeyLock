@@ -12,12 +12,11 @@ public sealed class AsyncLock<TKey>
 {
     public AsyncLock(int maxPoolSize = 64)
     {
-        MaxPoolSize = maxPoolSize;
+        _pool = new Pool<AsyncLock>(maxPoolSize);
     }
 
     private readonly IDictionary<TKey, AsyncLock> _locks = new Dictionary<TKey, AsyncLock>();
-    private readonly IList<AsyncLock> _pool = new List<AsyncLock>();
-    private readonly int MaxPoolSize;
+    private readonly Pool<AsyncLock> _pool;
 
     /// <summary>
     /// GetAsyncLock
@@ -28,34 +27,25 @@ public sealed class AsyncLock<TKey>
     {
         if (_locks.TryGetValue(key, out AsyncLock? asyncLock) == false)
         {
-            //is idle AsyncLock available
-            if (_pool.Count > 0)
-            {
-                int lastPos = _pool.Count - 1;
-
-                asyncLock = _pool[lastPos];
-
-                _pool.RemoveAt(lastPos);
-            }
-            else
-            {
-                //create new AsyncLock
-                asyncLock = new AsyncLock(_locks);
-                asyncLock.Released += x =>
+            //create new AsyncLock
+            _pool.GetOrCreate(out asyncLock,
+                () =>
                 {
-                    //is AsyncLock idle
-                    if (x.State == AsyncLockState.Idle)
+                    AsyncLock a = new AsyncLock(_locks);
+                    a.Released += x =>
                     {
-                        _locks.Remove(key);
-
-                        //add idle AsynLock to pool
-                        if (_pool.Count < MaxPoolSize)
+                        //is AsyncLock idle
+                        if (x.State == AsyncLockState.Idle)
                         {
+                            _locks.Remove(key);
+
+                            //add idle AsynLock to pool
                             _pool.Add(x);
                         }
-                    }
-                };
-            }
+                    };
+
+                    return a;
+                });
 
             _locks.Add(key, asyncLock);
         }

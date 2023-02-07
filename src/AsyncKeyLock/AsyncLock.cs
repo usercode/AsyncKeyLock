@@ -119,13 +119,13 @@ public sealed class AsyncLock
         }
     }
 
-    internal void Release(AsyncLockType type, bool sendReleasedEvent = true)
+    internal void Release(AsyncLockReleaser releaser, bool sendReleasedEvent = true)
     {
         lock (_syncObj)
         {
             try
             {
-                if (type == AsyncLockType.Write)
+                if (releaser.Type == AsyncLockType.Write)
                 {
                     WriterRelease();
                 }

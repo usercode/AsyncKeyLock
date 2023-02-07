@@ -9,28 +9,29 @@ namespace AsyncKeyLock;
 /// </summary>
 public sealed class AsyncLockReleaser : IDisposable
 {
-    private readonly AsyncLock _asyncLock;
-    private readonly AsyncLockType _type;
-    private readonly bool _lockAcquiredImmediately;
+    private bool _disposed;
 
-    internal AsyncLockReleaser(AsyncLock asyncLock, AsyncLockType type, bool lockAcquiredImmediately)
-    {
-        _asyncLock = asyncLock;
-        _type = type;
-        _lockAcquiredImmediately = lockAcquiredImmediately;
-    }
+    /// <summary>
+    /// AsyncLock
+    /// </summary>
+    private AsyncLock AsyncLock { get; }
 
     /// <summary>
     /// Type
     /// </summary>
-    public AsyncLockType Type => _type;
+    public AsyncLockType Type { get; }
 
     /// <summary>
     /// IsAcquiredImmediately
     /// </summary>
-    public bool IsAcquiredImmediately => _lockAcquiredImmediately;
+    public bool IsAcquiredImmediately { get; }
 
-    private bool _disposed;
+    internal AsyncLockReleaser(AsyncLock asyncLock, AsyncLockType type, bool lockAcquiredImmediately)
+    {
+        AsyncLock = asyncLock;
+        Type = type;
+        IsAcquiredImmediately = lockAcquiredImmediately;
+    }
 
     public void Dispose()
     {
@@ -39,7 +40,7 @@ public sealed class AsyncLockReleaser : IDisposable
             return;
         }
 
-        _asyncLock.Release(_type);
+        AsyncLock.Release(this);
         
         _disposed = true;
 
