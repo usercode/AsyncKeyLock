@@ -5,6 +5,11 @@
 
 ## Async Key-based Reader Writer Lock with Cancellation Support
 
+- Can create reader and writer locks (with key).
+- A reader lock allows concurrent access for read-only operations.
+- A writer lock allows exclusive access for operations.
+- It based internally on TaskCompletionSources which will be queued.
+
 ## How to use it
 
 ```csharp
