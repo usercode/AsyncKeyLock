@@ -1,8 +1,10 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Order;
 
 namespace AsyncKeyLock.Benchmarks;
 
 [MemoryDiagnoser]
+[Orderer(SummaryOrderPolicy.FastestToSlowest, MethodOrderPolicy.Declared)]
 public class BenchmarkSimpleKeyLock
 {
     [GlobalSetup]
