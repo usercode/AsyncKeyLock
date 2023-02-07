@@ -53,16 +53,4 @@ using var d2 = await asyncLock.WriterLockAsync("123", cts.Token);
 
 #### Create and release key locks
 
-|         Method | NumberOfLocks |        Mean |     Error |    StdDev | Ratio | RatioSD |     Gen0 |  Allocated | Alloc Ratio |
-|--------------- |-------------- |------------:|----------:|----------:|------:|--------:|---------:|-----------:|------------:|
-|   AsyncKeyLock |           100 |    11.99 μs |  0.087 μs |  0.077 μs |  1.00 |    0.00 |   2.8839 |   13.28 KB |        1.00 |
-| AsyncKeyedLock |           100 |    18.72 μs |  0.114 μs |  0.107 μs |  1.56 |    0.01 |   3.9063 |   17.97 KB |        1.35 |
-|  ImageSharpWeb |           100 |    29.43 μs |  0.177 μs |  0.166 μs |  2.45 |    0.02 |   3.7231 |   17.19 KB |        1.29 |
-|                |               |             |           |           |       |         |          |            |             |
-|   AsyncKeyLock |          1000 |   120.84 μs |  0.524 μs |  0.491 μs |  1.00 |    0.00 |  28.8086 |  132.81 KB |        1.00 |
-| AsyncKeyedLock |          1000 |   190.34 μs |  1.461 μs |  1.367 μs |  1.58 |    0.01 |  39.0625 |  179.69 KB |        1.35 |
-|  ImageSharpWeb |          1000 |   293.56 μs |  1.807 μs |  1.690 μs |  2.43 |    0.02 |  37.1094 |  171.88 KB |        1.29 |
-|                |               |             |           |           |       |         |          |            |             |
-|   AsyncKeyLock |         10000 | 1,201.14 μs |  9.040 μs |  8.456 μs |  1.00 |    0.00 | 289.0625 | 1328.13 KB |        1.00 |
-| AsyncKeyedLock |         10000 | 1,856.96 μs |  9.053 μs |  8.468 μs |  1.55 |    0.01 | 390.6250 | 1796.88 KB |        1.35 |
-|  ImageSharpWeb |         10000 | 2,973.14 μs | 17.736 μs | 16.590 μs |  2.48 |    0.02 | 371.0938 | 1718.75 KB |        1.29 |
+![grafik](https://user-images.githubusercontent.com/2958488/217371833-0b576ddb-a8ba-441b-9d65-3399eee1940b.png)
