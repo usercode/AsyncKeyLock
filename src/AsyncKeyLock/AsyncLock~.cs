@@ -34,14 +34,10 @@ public sealed class AsyncLock<TKey>
                     AsyncLock a = new AsyncLock(_locks);
                     a.Released += x =>
                     {
-                        //is AsyncLock idle
-                        if (x.State == AsyncLockState.Idle)
-                        {
-                            _locks.Remove(key);
+                        _locks.Remove(key);
 
-                            //add idle AsynLock to pool
-                            _pool.Add(x);
-                        }
+                        //add idle AsynLock to pool
+                        _pool.Add(x);
                     };
 
                     return a;

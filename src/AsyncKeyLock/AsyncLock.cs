@@ -12,9 +12,13 @@ public sealed class AsyncLock
     public AsyncLock()
     {
         _syncObj = _waitingWriters;
+
+        _readerReleaserTask = Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Read, true));
+        _writerReleaserTask = Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Write, true));
     }
 
     internal AsyncLock(object syncObject)
+        : this()
     {
         _syncObj = syncObject;
     }
@@ -23,6 +27,10 @@ public sealed class AsyncLock
 
     private readonly Queue<TaskCompletionSource<AsyncLockReleaser>> _waitingReaders = new Queue<TaskCompletionSource<AsyncLockReleaser>>();
     private readonly Queue<TaskCompletionSource<AsyncLockReleaser>> _waitingWriters = new Queue<TaskCompletionSource<AsyncLockReleaser>>();
+
+    private readonly Task<AsyncLockReleaser> _readerReleaserTask;
+    private readonly Task<AsyncLockReleaser> _writerReleaserTask;
+    
 
     private int _readersRunning;
 
@@ -85,7 +93,7 @@ public sealed class AsyncLock
             if (_isWriterRunning == false && _waitingWriters.Count == 0)
             {
                 _readersRunning++;
-                return Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Read, true));
+                return _readerReleaserTask;
             }
             else
             {
@@ -108,7 +116,7 @@ public sealed class AsyncLock
             if (_isWriterRunning == false && _readersRunning == 0)
             {
                 _isWriterRunning = true;
-                return Task.FromResult(new AsyncLockReleaser(this, AsyncLockType.Write, true));
+                return _writerReleaserTask;
             }
             else
             {
@@ -119,7 +127,7 @@ public sealed class AsyncLock
         }
     }
 
-    internal void Release(AsyncLockReleaser releaser, bool sendReleasedEvent = true)
+    internal void Release(AsyncLockReleaser releaser)
     {
         lock (_syncObj)
         {
@@ -136,7 +144,7 @@ public sealed class AsyncLock
             }
             finally
             {
-                if (sendReleasedEvent)
+                if (State == AsyncLockState.Idle)
                 {
                     Released?.Invoke(this);
                 }

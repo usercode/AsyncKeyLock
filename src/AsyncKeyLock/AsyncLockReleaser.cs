@@ -7,24 +7,22 @@ namespace AsyncKeyLock;
 /// <summary>
 /// AsyncLockReleaser
 /// </summary>
-public sealed class AsyncLockReleaser : IDisposable
+public readonly struct AsyncLockReleaser : IDisposable
 {
-    private bool _disposed;
-
     /// <summary>
     /// AsyncLock
     /// </summary>
-    private AsyncLock AsyncLock { get; }
+    private readonly AsyncLock AsyncLock;
 
     /// <summary>
     /// Type
     /// </summary>
-    public AsyncLockType Type { get; }
+    public readonly AsyncLockType Type;
 
     /// <summary>
     /// IsAcquiredImmediately
     /// </summary>
-    public bool IsAcquiredImmediately { get; }
+    public readonly bool IsAcquiredImmediately;
 
     internal AsyncLockReleaser(AsyncLock asyncLock, AsyncLockType type, bool lockAcquiredImmediately)
     {
@@ -35,15 +33,6 @@ public sealed class AsyncLockReleaser : IDisposable
 
     public void Dispose()
     {
-        if (_disposed)
-        {
-            return;
-        }
-
         AsyncLock.Release(this);
-        
-        _disposed = true;
-
-        GC.SuppressFinalize(this);
     }
 }
