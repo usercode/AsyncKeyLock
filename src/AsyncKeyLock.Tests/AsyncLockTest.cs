@@ -34,7 +34,7 @@ public class AsyncLockTest
             using var r1 = await lockEntity.ReaderLockAsync();
             using var r2 = await lockEntity.ReaderLockAsync();
             using var r3 = await lockEntity.ReaderLockAsync();
-        }
+        }        
 
         Assert.Equal(0, lockEntity.CountRunningReaders);
     }

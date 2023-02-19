@@ -11,7 +11,7 @@ public sealed class AsyncLock
 {
     public AsyncLock()
     {
-        _syncObj = _waitingWriters;
+        SyncObj = _waitingWriters;
 
         _readerReleaserTask = Task.FromResult(new ReaderReleaser(this, true));
         _writerReleaserTask = Task.FromResult(new WriterReleaser(this, true));
@@ -20,10 +20,10 @@ public sealed class AsyncLock
     internal AsyncLock(object syncObject)
         : this()
     {
-        _syncObj = syncObject;
+        SyncObj = syncObject;
     }
 
-    private readonly object _syncObj;
+    internal readonly object SyncObj;
 
     private readonly Queue<TaskCompletionSource<ReaderReleaser>> _waitingReaders = new Queue<TaskCompletionSource<ReaderReleaser>>();
     private readonly Queue<TaskCompletionSource<WriterReleaser>> _waitingWriters = new Queue<TaskCompletionSource<WriterReleaser>>();
@@ -86,7 +86,7 @@ public sealed class AsyncLock
             return Task.FromCanceled<ReaderReleaser>(cancellation);
         }
 
-        lock (_syncObj)
+        lock (SyncObj)
         {
             //no running or waiting write lock?
             if (_isWriterRunning == false && _waitingWriters.Count == 0)
@@ -110,7 +110,7 @@ public sealed class AsyncLock
             return Task.FromCanceled<WriterReleaser>(cancellation);
         }
 
-        lock (_syncObj)
+        lock (SyncObj)
         {
             if (_isWriterRunning == false && _readersRunning == 0)
             {
@@ -126,9 +126,9 @@ public sealed class AsyncLock
         }
     }
 
-    internal void Release(AsyncLockType type)
+    internal void Release(AsyncLockType type, bool sendReleaseEvent = true)
     {
-        lock (_syncObj)
+        lock (SyncObj)
         {
             try
             {
@@ -143,7 +143,7 @@ public sealed class AsyncLock
             }
             finally
             {
-                if (State == AsyncLockState.Idle)
+                if (sendReleaseEvent && State == AsyncLockState.Idle)
                 {
                     Released?.Invoke(this);
                 }

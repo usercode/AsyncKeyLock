@@ -29,21 +29,41 @@ public readonly struct ReaderReleaser : IDisposable
     {
         cancellation.ThrowIfCancellationRequested();
 
-        //release reader lock
-        AsyncLock.Release(AsyncLockType.Read);
+        Task<WriterReleaser> taskWriter;
+        WriterReleaser? writerReleaser = null;
+
+        lock (AsyncLock.SyncObj)
+        {
+            //release reader lock
+            AsyncLock.Release(AsyncLockType.Read, false);
+
+            taskWriter = AsyncLock.WriterLockAsync(cancellation);
+        }
 
         try
         {
             //create new writer lock
-            using (await AsyncLock.WriterLockAsync(cancellation))
-            {
-                await func();
-            }
+            writerReleaser = await taskWriter;
+            
+            await func();
+            
         }
         finally
         {
-            //restore reader lock
-            await AsyncLock.ReaderLockAsync();
+            Task<ReaderReleaser> taskReader;
+
+            lock (AsyncLock.SyncObj)
+            {
+                if (writerReleaser != null)
+                {
+                    AsyncLock.Release(AsyncLockType.Write, false);
+                }
+
+                //restore reader lock
+                taskReader = AsyncLock.ReaderLockAsync();
+            }
+
+            await taskReader;
         }
     }
 
