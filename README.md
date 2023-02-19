@@ -32,7 +32,7 @@ using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSec
 using var d2 = await asyncLock.WriterLockAsync("123", cts.Token);
 
 //use writer lock scope to break long running reader lock
-using (var r1 = await lockEntity.ReaderLockAsync())
+using (ReaderReleaser r1 = await asyncLock.ReaderLockAsync())
 {
    //use reader lock
 
