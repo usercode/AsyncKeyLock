@@ -1,5 +1,5 @@
 ﻿// Copyright (c) usercode
-// https://github.com/usercode/AsyncLock
+// https://github.com/usercode/AsyncKeyLock
 // MIT License
 
 namespace AsyncKeyLock;
@@ -54,7 +54,7 @@ public sealed class AsyncLock<TKey>
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public Task<AsyncLockReleaser> ReaderLockAsync(TKey key, CancellationToken cancellation = default)
+    public Task<ReaderReleaser> ReaderLockAsync(TKey key, CancellationToken cancellation = default)
     {
         lock (_locks)
         {
@@ -67,7 +67,7 @@ public sealed class AsyncLock<TKey>
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public Task<AsyncLockReleaser> WriterLockAsync(TKey key, CancellationToken cancellation = default)
+    public Task<WriterReleaser> WriterLockAsync(TKey key, CancellationToken cancellation = default)
     {
         lock (_locks)
         {

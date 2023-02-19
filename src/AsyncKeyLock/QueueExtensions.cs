@@ -1,12 +1,12 @@
 ﻿// Copyright (c) usercode
-// https://github.com/usercode/AsyncLock
+// https://github.com/usercode/AsyncKeyLock
 // MIT License
 
 namespace AsyncKeyLock;
 
 public static class QueueExtensions
 {
-    public static TaskCompletionSource<T> Enqueue<T>(this Queue<TaskCompletionSource<T>> queue, CancellationToken cancellationToken)
+    public static Task<T> Enqueue<T>(this Queue<TaskCompletionSource<T>> queue, CancellationToken cancellationToken)
     {
         TaskCompletionSource<T> item = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -26,6 +26,6 @@ public static class QueueExtensions
             CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
         }
 
-        return item;
+        return item.Task;
     }
 }

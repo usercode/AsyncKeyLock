@@ -1,4 +1,8 @@
-﻿namespace AsyncKeyLock;
+﻿// Copyright (c) usercode
+// https://github.com/usercode/AsyncKeyLock
+// MIT License
+
+namespace AsyncKeyLock;
 
 /// <summary>
 /// Pool

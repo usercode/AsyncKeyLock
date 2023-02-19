@@ -1,13 +1,13 @@
 ﻿// Copyright (c) usercode
-// https://github.com/usercode/AsyncLock
+// https://github.com/usercode/AsyncKeyLock
 // MIT License
 
 namespace AsyncKeyLock;
 
 /// <summary>
-/// AsyncLockReleaser
+/// WriterReleaser
 /// </summary>
-public readonly struct AsyncLockReleaser : IDisposable
+public readonly struct WriterReleaser : IDisposable
 {
     /// <summary>
     /// AsyncLock
@@ -15,24 +15,18 @@ public readonly struct AsyncLockReleaser : IDisposable
     private readonly AsyncLock AsyncLock;
 
     /// <summary>
-    /// Type
-    /// </summary>
-    public readonly AsyncLockType Type;
-
-    /// <summary>
     /// IsAcquiredImmediately
     /// </summary>
     public readonly bool IsAcquiredImmediately;
 
-    internal AsyncLockReleaser(AsyncLock asyncLock, AsyncLockType type, bool lockAcquiredImmediately)
+    internal WriterReleaser(AsyncLock asyncLock, bool lockAcquiredImmediately)
     {
         AsyncLock = asyncLock;
-        Type = type;
         IsAcquiredImmediately = lockAcquiredImmediately;
-    }
+    }    
 
     public void Dispose()
     {
-        AsyncLock.Release(this);
+        AsyncLock.Release(AsyncLockType.Write);
     }
 }

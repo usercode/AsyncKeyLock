@@ -31,6 +31,19 @@ using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSec
 //acquire writer lock
 using var d2 = await asyncLock.WriterLockAsync("123", cts.Token);
 
+//use writer lock scope
+
+using var r1 = await asyncLock.ReaderLockAsync();
+
+//use reader lock
+
+if (..)
+{
+   r1.UseWriterLockAsync(async () => { /*use writer lock here*/ });
+}
+
+//continue with reader lock
+
 ```
 
 ### Benchmarks

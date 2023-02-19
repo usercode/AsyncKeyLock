@@ -174,4 +174,62 @@ public class AsyncLockTest
 
         await Task.WhenAll(Enumerable.Range(0, 100).Select(x => Task.Run(enterReadThenWrite)));
     }
+
+    [Fact]
+    public async Task ReaderReleaserUseWriterLock()
+    {
+        AsyncLock asyncLock = new AsyncLock();
+
+        using var r1 = await asyncLock.ReaderLockAsync();
+
+        await r1.UseWriterLockAsync(async () =>
+        {
+            Assert.Equal(0, asyncLock.CountRunningReaders);
+            Assert.True(asyncLock.IsWriterRunning);
+        });
+
+        Assert.Equal(1, asyncLock.CountRunningReaders);
+        Assert.False(asyncLock.IsWriterRunning);
+    }
+
+    [Fact]
+    public async Task ReaderReleaserUseWriterLockWithCancellation()
+    {
+        AsyncLock asyncLock = new AsyncLock();
+
+        using var r1 = await asyncLock.ReaderLockAsync();
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await Assert.ThrowsAsync<OperationCanceledException>(async () =>
+        {
+            await r1.UseWriterLockAsync(async () =>
+            {
+                throw new AccessViolationException();
+            }, cts.Token);
+        });
+
+        Assert.Equal(1, asyncLock.CountRunningReaders);
+        Assert.False(asyncLock.IsWriterRunning);
+    }
+
+    [Fact]
+    public async Task ReaderReleaserUseWriterLockWithException()
+    {
+        AsyncLock asyncLock = new AsyncLock();
+
+        using var r1 = await asyncLock.ReaderLockAsync();
+
+        await Assert.ThrowsAsync<Exception>(async () =>
+        {
+            await r1.UseWriterLockAsync(async () =>
+            {
+                throw new Exception();
+            });
+        });
+
+        Assert.Equal(1, asyncLock.CountRunningReaders);
+        Assert.False(asyncLock.IsWriterRunning);
+    }
 }
