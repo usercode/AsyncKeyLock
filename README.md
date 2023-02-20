@@ -44,13 +44,3 @@ using (ReaderReleaser r1 = await asyncLock.ReaderLockAsync())
    //continue with reader lock
 }
 ```
-
-### Benchmarks
-
-#### Create und release locks
-
-![grafik](https://user-images.githubusercontent.com/2958488/217373765-78bd3d41-eb95-4f20-b756-12eaedceaeb5.png)
-
-#### Create and release key locks
-
-![grafik](https://user-images.githubusercontent.com/2958488/217371833-0b576ddb-a8ba-441b-9d65-3399eee1940b.png)
