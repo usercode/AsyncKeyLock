@@ -1,9 +1,7 @@
-# AsyncKeyLock
+# Async Key-based Reader Writer Lock with Cancellation Support
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![NuGet](https://img.shields.io/nuget/v/AsyncKeyLock.svg?style=flat-square)](https://www.nuget.org/packages/AsyncKeyLock)
-
-## Async Key-based Reader Writer Lock with Cancellation Support
 
 - Can create reader and writer locks (with key).
 - A reader lock allows concurrent access for read-only operations.
