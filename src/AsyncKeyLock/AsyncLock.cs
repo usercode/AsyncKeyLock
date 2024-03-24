@@ -25,8 +25,8 @@ public sealed class AsyncLock
 
     internal readonly object SyncObj;
 
-    private readonly Queue<TaskCompletionSource<ReaderReleaser>> _waitingReaders = new Queue<TaskCompletionSource<ReaderReleaser>>();
-    private readonly Queue<TaskCompletionSource<WriterReleaser>> _waitingWriters = new Queue<TaskCompletionSource<WriterReleaser>>();
+    private readonly Queue<TaskCompletionSource<ReaderReleaser>> _waitingReaders = new();
+    private readonly Queue<TaskCompletionSource<WriterReleaser>> _waitingWriters = new();
 
     private readonly Task<ReaderReleaser> _readerReleaserTask;
     private readonly Task<WriterReleaser> _writerReleaserTask;

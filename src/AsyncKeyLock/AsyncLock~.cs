@@ -15,7 +15,7 @@ public sealed class AsyncLock<TKey>
         _pool = new Pool<AsyncLock>(maxPoolSize);
     }
 
-    private readonly IDictionary<TKey, AsyncLock> _locks = new Dictionary<TKey, AsyncLock>();
+    private readonly Dictionary<TKey, AsyncLock> _locks = new();
     private readonly Pool<AsyncLock> _pool;
 
     /// <summary>

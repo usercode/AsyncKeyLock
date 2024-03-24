@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using AsyncKeyedLock;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
 
 namespace AsyncKeyLock.Benchmarks;
@@ -13,11 +14,13 @@ public class BenchmarkSimpleWriterLock
         _AsyncKeyLock = new AsyncLock();
         _NeoSmartLock = new NeoSmart.AsyncLock.AsyncLock();
         _NitoLock = new Nito.AsyncEx.AsyncLock();
+        _asyncNonKeyedLocker = new AsyncNonKeyedLocker();
     }
 
     private AsyncLock _AsyncKeyLock;
     private NeoSmart.AsyncLock.AsyncLock _NeoSmartLock;
     private Nito.AsyncEx.AsyncLock _NitoLock;
+    private AsyncNonKeyedLocker _asyncNonKeyedLocker;
 
     [Params(1_00, 1_000, 10_000)]
     public int NumberOfLocks;
@@ -52,6 +55,18 @@ public class BenchmarkSimpleWriterLock
         for (int i = 0; i < NumberOfLocks; i++)
         {
             using (await _NitoLock.LockAsync())
+            {
+
+            }
+        }
+    }
+
+    [Benchmark]
+    public async Task AsyncNonKeyedLocker()
+    {
+        for (int i = 0; i < NumberOfLocks; i++)
+        {
+            using (await _asyncNonKeyedLocker.LockAsync())
             {
 
             }

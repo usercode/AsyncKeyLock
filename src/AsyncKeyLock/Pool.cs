@@ -9,7 +9,7 @@ namespace AsyncKeyLock;
 /// </summary>
 internal sealed class Pool<T>
 {
-    private readonly IList<T> _pool = new List<T>();
+    private readonly List<T> _pool = new();
     private readonly int MaxPoolSize;
 
     public Pool(int maxPoolSize = 64)
