@@ -15,11 +15,13 @@ public class BenchmarkSimpleKeyLock
         {
             o.PoolSize = NumberOfLocks;
         });
+        _StripedAsyncKeyedLock = new AsyncKeyedLock.StripedAsyncKeyedLocker<string>(NumberOfLocks);
         _ImageSharpWebLock = new SixLabors.ImageSharp.Web.Synchronization.AsyncKeyLock<string>();
     }
 
     private AsyncLock<string> _AsyncKeyLock;
     private AsyncKeyedLock.AsyncKeyedLocker<string> _AsyncKeyedLock;
+    private AsyncKeyedLock.StripedAsyncKeyedLocker<string> _StripedAsyncKeyedLock;
     private SixLabors.ImageSharp.Web.Synchronization.AsyncKeyLock<string> _ImageSharpWebLock;
 
     [Params(1_00, 1_000, 10_000)]
@@ -43,6 +45,18 @@ public class BenchmarkSimpleKeyLock
         for (int i = 0; i < NumberOfLocks; i++)
         {
             using (await _AsyncKeyedLock.LockAsync(string.Empty))
+            {
+
+            }
+        }
+    }
+    
+    [Benchmark]
+    public async Task StripedAsyncKeyedLock()
+    {
+        for (int i = 0; i < NumberOfLocks; i++)
+        {
+            using (await _StripedAsyncKeyedLock.LockAsync(string.Empty))
             {
 
             }
