@@ -1,4 +1,4 @@
 ﻿using AsyncKeyLock.Benchmarks;
 using BenchmarkDotNet.Running;
 
-BenchmarkRunner.Run<BenchmarkSimpleWriterLock>();
+BenchmarkRunner.Run<BenchmarkSimpleKeyLock>();

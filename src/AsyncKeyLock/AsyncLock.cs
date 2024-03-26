@@ -170,10 +170,8 @@ public sealed class AsyncLock
         //no running writer lock?
         if (_isWriterRunning == false)
         {
-            while (_waitingReaders.Count > 0)
+            while (_waitingReaders.TryDequeue(out var taskSource))
             {
-                var taskSource = _waitingReaders.Dequeue();
-
                 bool result = taskSource.TrySetResult(new ReaderReleaser(this, false));
 
                 if (result)
@@ -186,10 +184,8 @@ public sealed class AsyncLock
 
     private void StartNextWaitingWriter()
     {
-        while (_waitingWriters.Count > 0)
+        while (_waitingWriters.TryDequeue(out var taskSource))
         {
-            var taskSource = _waitingWriters.Dequeue();
-
             bool result = taskSource.TrySetResult(new WriterReleaser(this, false));
 
             if (result == true)

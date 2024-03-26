@@ -21,8 +21,6 @@ public sealed class AsyncLock<TKey>
     /// <summary>
     /// GetAsyncLock
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
     private AsyncLock GetAsyncLock(TKey key)
     {
         if (_locks.TryGetValue(key, out AsyncLock? asyncLock) == false)
@@ -52,8 +50,6 @@ public sealed class AsyncLock<TKey>
     /// <summary>
     /// ReaderLockAsync
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
     public Task<ReaderReleaser> ReaderLockAsync(TKey key, CancellationToken cancellation = default)
     {
         lock (_locks)
@@ -65,8 +61,6 @@ public sealed class AsyncLock<TKey>
     /// <summary>
     /// WriterLockAsync
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
     public Task<WriterReleaser> WriterLockAsync(TKey key, CancellationToken cancellation = default)
     {
         lock (_locks)
