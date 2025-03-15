@@ -10,20 +10,19 @@ namespace AsyncKeyLock;
 public sealed class AsyncLock
 {
     public AsyncLock()
+        : this(new Lock())
     {
-        SyncObj = _waitingWriters;
+    }
+
+    internal AsyncLock(Lock syncObject)
+    {
+        SyncObj = syncObject;
 
         _readerReleaserTask = Task.FromResult(new ReaderReleaser(this, true));
         _writerReleaserTask = Task.FromResult(new WriterReleaser(this, true));
     }
 
-    internal AsyncLock(object syncObject)
-        : this()
-    {
-        SyncObj = syncObject;
-    }
-
-    internal readonly object SyncObj;
+    internal readonly Lock SyncObj;
 
     private readonly Queue<TaskCompletionSource<ReaderReleaser>> _waitingReaders = new();
     private readonly Queue<TaskCompletionSource<WriterReleaser>> _waitingWriters = new();
